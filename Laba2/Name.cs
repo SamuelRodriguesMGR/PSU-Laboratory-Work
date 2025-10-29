@@ -1,8 +1,8 @@
 public class Name
 {
-    private string LastName { get; set; }   // Фамилия
-    private string FirstName { get; set; }  // Имя
-    private string MiddleName { get; set; } // Отчество
+    private string LastName;  // Фамилия
+    private string FirstName; // Имя
+    private string MiddleName;// Отчество
 
     public Name() { 
         LastName = null!;

@@ -1,7 +1,7 @@
 public class Person
 {
-    private Name FullName { get; set; }
-    private int Height { get; set; }
+    private Name FullName;
+    private int Height;
 
     public Person(Name fullname, int height)
     {

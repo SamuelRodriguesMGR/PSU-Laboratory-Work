@@ -1,6 +1,6 @@
 public class City
 {
-    private string Name { get; set; }
+    private string Name;
     private Dictionary<City, int> routes;
 
     public City(string name)

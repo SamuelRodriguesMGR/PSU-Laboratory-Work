@@ -1,7 +1,7 @@
 public class Human
 {
-    private string Name { get; set; }
-    private int Height { get; set; }
+    private string Name;
+    private int Height;
 
     public Human(string name, int height)
     {

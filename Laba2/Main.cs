@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace MyConsoleApp
 {
     class Program
@@ -57,7 +58,7 @@ namespace MyConsoleApp
             // Console.WriteLine($"• {cityE}");
             // Console.WriteLine($"• {cityF}");
 
-            
+
             // Console.WriteLine(">>>>>>>>>>>>>>>>>\n>   ЗАДАНИЕ 4. НОМЕР 2   <\n<<<<<<<<<<<<<<<<<");
             // UpdateCity updateCityA = new UpdateCity("A");
             // UpdateCity updateCityB = new UpdateCity("B");
