@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Laba2/bin/Debug/net9.0/Lab2.dll",
+            "program": "${workspaceFolder}/bin/Debug/net9.0/Lab2.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Laba2",
+            "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopAtEntry": false
         },

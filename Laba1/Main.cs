@@ -31,7 +31,7 @@ namespace MyConsoleApp
             // Array4.Launch();
             // Array6.Launch();
             // Array8.Launch();
-            // Array10.Launch();
+            Array10.Launch();
         }
     }
 }

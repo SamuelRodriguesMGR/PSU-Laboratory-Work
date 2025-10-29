@@ -1,8 +1,7 @@
-
 public class Fraction
 {
-    public int Numerator { get; set; }
-    public int Denominator { get; set; } = 1;
+    private int Numerator { get; set; }
+    private int Denominator { get; set; }
 
     public Fraction(int numerator, int denominator = 1)
     {

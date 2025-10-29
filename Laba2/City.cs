@@ -1,56 +1,36 @@
-
 public class City
 {
-    public string Name { get; set; }
-    String[] NamesCities;
-    int[] WaysCities;
+    private string Name { get; set; }
+    private Dictionary<City, int> routes;
 
-    public City(string name, String[] cities, int[] ways)
+    public City(string name)
     {
         Name = name;
-        NamesCities = cities;
-        WaysCities = ways;
+        routes = new Dictionary<City, int>();
     }
 
+    public void AddRoute(City city, int cost)
+    {
+        routes[city] = cost;
+    }
+
+    public bool RemoveRoute(City city)
+    {
+        return routes.Remove(city);
+    }
+
+    public string GetTextOutput()
+    {
+        
+        var routeStrings = routes.Select(route => $"{route.Key.Name}:{route.Value}");
+        return routes.Count > 0
+            ? $"Город с названием {Name} соединён с городами: {string.Join(", ", routeStrings)}"
+            : $"Город с названием {Name} не соединён с городами";
+    }
+    
     public override string ToString()
     {
-        String c = "";
-        for (int i = 0; i < NamesCities.Length; i++)
-        {
-            c += $"{NamesCities[i]}: {WaysCities[i]}; ";
-        }
-        return $"Город с название {Name} и соединён с городами: {c}";
+        return GetTextOutput();
     }
 }
 
-public class CityUpdate
-{
-    public string Name { get; set; }
-    String[] NamesCities = {};
-    int[] WaysCities = {};
-
-    public CityUpdate(string name)
-    {
-        Name = name;
-    }
-
-    public CityUpdate(string name, String[] cities, int[] ways)
-    {
-        Name = name;
-        NamesCities = cities;
-        WaysCities = ways;
-    }
-
-    public override string ToString()
-    {   
-        if(NamesCities.Length == 0){
-            return $"Город с названием {Name} и не соединён ни с кем";
-        }
-        String c = "";
-        for(int i = 0; i < NamesCities.Length; i++)
-        {
-            c += $"{NamesCities[i]}: {WaysCities[i]}; ";
-        }
-        return $"Город с название {Name} и соединён с городами: {c}";
-    }
-}
