@@ -4,108 +4,199 @@ using System.Collections.Generic;
 
 public class EnterNums
 {
-    private List<dynamic> listL;
-
-    public EnterNums(List<dynamic> listl)
+    public static List<T> RemoveAfterE<T>(List<T> list, T element)
     {
-        listL = listl;
-    }
-
-    public string GetListL()
-    {
-        var array = listL.ToArray();
-        return string.Join(", ", array);
-    }
-
-    public void RemoveAfterE(dynamic E)
-    {
-        int i = 0;
-        while (i < listL.Count - 1)
+        List<T> result = new List<T>();
+        for (int i = 0; i < list.Count; i++)
         {
-            if (listL[i] == E && listL[i + 1] != E)
+            result.Add(list[i]);
+
+            if (list[i].Equals(element) &&
+                i + 1 < list.Count &&
+                !list[i + 1].Equals(element))
             {
-                // удаляем следущий элемент
-                listL.RemoveAt(i + 1);
-                break;
+                i++;
+            }
+        }
+
+        return result;
+    }
+
+    public static bool HasEqualNeighbors<T>(List<T> list)
+    {
+        // короче блин, если один элемент или меньше, то бан без объяснений
+        if (list == null || list.Count <= 1)
+            return false;
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            int nextIndex = (i + 1) % list.Count;
+            if (list[i].Equals(list[nextIndex]))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static Dictionary<string, TouristStatus> AnalyzeTouristCountries(List<string> countries, Dictionary<string, List<string>> touristVisits)
+    {
+        Dictionary<string, TouristStatus> result = new Dictionary<string, TouristStatus>();
+        int totalTourists = touristVisits.Count;
+
+        foreach (string country in countries)
+        {
+            int visitorsCount = CountTouristsVisitedCountry(country, touristVisits); // АААА количество туристов посетивших эту страну
+            // Console.WriteLine(visitorsCount);
+
+            if (visitorsCount == totalTourists)
+            {
+                result[country] = TouristStatus.AllVisited;
+            }
+            else if (visitorsCount > 0)
+            {
+                result[country] = TouristStatus.SomeVisited;
             }
             else
             {
-                i += 1;
+                result[country] = TouristStatus.NoneVisited;
             }
+                
         }
+
+        return result;
     }
 
-    public bool ElementHaveCopy()
+    private static int CountTouristsVisitedCountry(string country, Dictionary<string, List<string>> touristVisits)
     {
-        for (int i = 0; i < listL.Count - 1; i++)
+        int count = 0;
+        foreach (var visits in touristVisits.Values)
         {
-            if (listL[i] == listL[i + 1])
-            {
-                return true;
-            }
+            if (visits.Contains(country)) // содержится ли страна
+                count++;
         }
-        Console.WriteLine(listL[0] + listL[listL.Count - 1]);
-        if (listL[listL.Count - 1] == listL[0])
-        {
-            return true;
-        }
-        return false;
+        return count;
     }
-    
-    public void Deaf()
+
+    public static List<char> FindDeafConsonants(string filePath)
     {
-        char[] deafConsonants = { 'п', 'ф', 'к', 'т', 'ш', 'с', 'х', 'ц', 'ч', 'щ' };
+        string text = File.ReadAllText(filePath).ToLower();
         char[] separators = { ' ', ',', '.', '!', '?', ';', ':', '(', ')', '\n' };
+        string[] words = text.Split(separators);
 
-        string text = File.ReadAllText("/home/marat/Development/C#/PSU-Laboratory-Work/Laba4/FirstNumbers/FirstNumbers/Num4.txt").ToLower();
-        string[] words = text.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-        Dictionary<char, int> letterCount = new Dictionary<char, int>();
+        HashSet<char> deafConsonants = new HashSet<char> { 'п', 'ф', 'к', 'т', 'ш', 'с', 'х', 'ц', 'ч', 'щ' };
+        Dictionary<char, int> consonantWordCount = new Dictionary<char, int>();
+
+        foreach (char consonant in deafConsonants)
+        {
+            consonantWordCount[consonant] = 0;
+        }
+        // Console.WriteLine(String.Join(", ", consonantWordCount));
 
         foreach (string word in words)
         {
-            HashSet<char> lettersInWord = new HashSet<char>();
+            HashSet<char> consonantsInWord = new HashSet<char>();
 
-            foreach (char letter in word)
+            foreach (char c in word)
             {
-                if (deafConsonants.Contains(letter))
+                if (deafConsonants.Contains(c)) // есть еть глухая согласная
                 {
-                    lettersInWord.Add(letter);
+                    consonantsInWord.Add(c);
                 }
             }
+            // Console.WriteLine(String.Join(", ", consonantsInWord));
 
-            // Увеличиваем счетчик для каждой уникальной буквы в слове
-            foreach (char letter in lettersInWord)
+            foreach (char consonant in consonantsInWord)
             {
-                if (letterCount.ContainsKey(letter))
-                {
-                    letterCount[letter] += 1;
-                }
-                else
-                {
-                    letterCount[letter] = 1;
-                }
+                consonantWordCount[consonant]++;
             }
         }
-        
-        // Отбираем буквы, которые не входят ровно в одно слово
-        List<char> resultLetters = new List<char>();
-        foreach (var pair in letterCount)
+        Console.WriteLine(String.Join(", ", consonantWordCount));
+
+        List<char> result = new List<char>();
+        foreach (var pair in consonantWordCount)
         {
-            if (pair.Value != 1)
+            if (pair.Value != 1) // если согласная встречалось больше или меньше 1 раз в словах -> добавить в список
             {
-                resultLetters.Add(pair.Key);
+                result.Add(pair.Key);
             }
         }
 
-        // Сортируем результат в алфавитном порядке
-        resultLetters.Sort();
+        result.Sort();
 
-        // Выводим результат
-        Console.WriteLine("Глухие согласные, которые не входят ровно в одно слово:");
-        foreach (char letter in resultLetters)
-        {
-            Console.Write(letter + " ");
-        }
+        return result;
     }
+
+    public static void CreateTestDataFile(string filePath)
+    {
+        string[] testData = {
+            "5",
+            "Ветров Роман 68 59",
+            "Анисимова Екатерина 64 88",
+            "Петров Иван 25 45",
+            "Сидорова Анна 35 28",
+            "Козлов Дмитрий 20 25"
+        };
+
+        File.WriteAllLines(filePath, testData);
+    }
+
+    public static List<string> ProcessApplicants(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath); // чит файл
+        List<Applicant> failedApplicants = new List<Applicant>();
+        
+        for (int i = 1; i < lines.Length; i++)
+        {
+            Applicant applicant = ParseApplicant(lines[i]);
+            
+            if (applicant.Score1 < 30 || applicant.Score2 < 30)
+            {
+                failedApplicants.Add(applicant);
+            }
+        }
+        // Console.WriteLine(String.Join(", ", failedApplicants));
+
+        List<string> result = new List<string>();
+
+        foreach (var applicant in failedApplicants)
+        {
+            result.Add($"{applicant.LastName} {applicant.FirstName}");
+        }
+
+        result.Sort();
+            
+        return result;
+    }
+
+
+    private static Applicant ParseApplicant(string line) // Жоско делим абиатурента на части
+    {
+        string[] parts = line.Split(' ');
+            
+        return new Applicant
+        {
+            LastName = parts[0],
+            FirstName = parts[1],
+            Score1 = int.Parse(parts[2]),
+            Score2 = int.Parse(parts[3])
+        };
+    }
+
+    private class Applicant
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public int Score1 { get; set; }
+        public int Score2 { get; set; }
+    }
+
+
+}
+
+public enum TouristStatus
+{
+    AllVisited, // 0
+    SomeVisited, // 1
+    NoneVisited // 2
 }
 
